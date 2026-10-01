@@ -1,0 +1,17 @@
+---
+/** Bloque visual que marca dónde irá una fotografía. Sustituir por <img> / <Image> más adelante. */
+interface Props {
+  label: string;            // "IMAGE PLACEHOLDER — HERO"
+  alt?: string;             // alt text futuro de la imagen real
+  tone?: 'olive' | 'clay' | 'stone' | 'sand' | 'ink';
+  shape?: 'rect' | 'arch' | 'round';
+  ratio?: string;           // "4 / 5"
+  class?: string;
+  [key: string]: unknown;
+}
+const { label, alt, tone = 'olive', shape = 'rect', ratio, class: cls = '', ...rest } = Astro.props;
+---
+<div class:list={['ph', `ph--${tone}`, `ph--${shape}`, cls]} style={ratio ? `aspect-ratio:${ratio}` : undefined}
+     role="img" aria-label={alt ?? label} {...rest}>
+  <span class="ph__label">{label}</span>
+</div>

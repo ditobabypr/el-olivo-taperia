@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import { carta, cartaAviso } from '../data/carta';
+import { site } from '../data/site';
+---
+<Base title="Carta | El Olivo Tapería · Nerja" description="Carta de El Olivo Tapería en Nerja: tapas, platos para compartir, pescados, carnes, postres y bebidas.">
+  <section class="menu-hero">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light">El Olivo Tapería · Nerja</p>
+      <h1 class="display display--xl display--light">La carta</h1>
+      <p class="menu-hero__note">{cartaAviso}</p>
+    </div>
+  </section>
+
+  <nav class="chips" aria-label="Secciones de la carta">
+    <div class="chips__scroll">
+      {carta.map((s) => <a href={`#${s.id}`}>{s.titulo}</a>)}
+    </div>
+  </nav>
+
+  <div class="wrap menu-page">
+    {carta.map((s, i) => (
+      <section class="menu__sec" id={s.id}>
+        <header class="menu__head">
+          <span class="menu__num">{String(i + 1).padStart(2, '0')}</span>
+          <h2 class="display display--md">{s.titulo}</h2>
+          {s.nota && <p class="menu__nota">{s.nota}</p>}
+        </header>
+        <ul class="dishes">
+          {s.platos.map((p) => (
+            <li class="dish" data-reveal>
+              <div class="dish__top">
+                <h3 class="dish__name">{p.nombre}</h3>
+                <span class="dish__leader" aria-hidden="true"></span>
+                <span class="dish__price">{p.precio} €</span>
+              </div>
+              {p.descripcion && <p class="dish__desc">{p.descripcion}</p>}
+              {p.etiquetas && (
+                <p class="dish__tags">{p.etiquetas.map((t) => <span>{t}</span>)}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <aside class="menu__foot">
+      <p>¿Dudas con alérgenos o intolerancias? Pregunta a nuestro equipo.</p>
+      <div class="hero__cta">
+        <a class="btn" href={site.mapsUrl}>Cómo llegar</a>
+        <a class="btn btn--ghost" href={site.phoneHref}>Llamar</a>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // Resalta la sección visible en los chips
+    const chips = [...document.querySelectorAll<HTMLAnchorElement>('.chips a')];
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        if (!e.isIntersecting) return;
+        chips.forEach((c) => {
+          const on = c.hash === `#${e.target.id}`;
+          c.classList.toggle('on', on);
+          if (on) c.scrollIntoView({ inline: 'center', block: 'nearest' });
+        });
+      });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    document.querySelectorAll('.menu__sec').forEach((s) => io.observe(s));
+  </script>
+</Base>

@@ -1,0 +1,120 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Intro from '../components/Intro.astro';
+import { intro } from '../config/intro';
+import { site } from '../data/site';
+
+interface Props { title?: string; description?: string; }
+const { title = site.title, description = site.description } = Astro.props;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: site.name,
+  description,
+  telephone: '+34640571456',
+  servesCuisine: ['Tapas', 'Mediterránea'],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.postal,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '12:30', closes: '16:30',
+  }, {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '20:00', closes: '23:59',
+  }],
+};
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#2F351A" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:locale" content="es_ES" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Mrs+Saint+Delafield&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="/brand/olivo-arbol.png" />
+    <script is:inline define:vars={{ mode: intro.mode, key: intro.storageKey, exclude: intro.excludePaths }}>
+      var d = document.documentElement; d.classList.add('js');
+      // ¿Mostrar la intro? Se decide antes del primer pintado para evitar parpadeos.
+      (function () {
+        try {
+          var path = location.pathname.replace(/\/$/, '') || '/';
+          if (mode === 'never' || exclude.indexOf(path) > -1) return;
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (mode !== 'always') {
+            var st = mode === 'once' ? localStorage : sessionStorage;
+            if (st.getItem(key)) return;
+            st.setItem(key, '1');
+          }
+          d.classList.add('intro-on');
+        } catch (e) {}
+      })();
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <Intro />
+    <div id="page">
+      <Nav />
+      <main id="main"><slot /></main>
+      <Footer />
+    </div>
+    <script>
+      const root = document.documentElement;
+      const page = document.getElementById('page')!;
+
+      // Aparición suave al hacer scroll (respeta prefers-reduced-motion)
+      function startReveals() {
+        const els = document.querySelectorAll('[data-reveal]');
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+          els.forEach((e) => e.classList.add('in'));
+          return;
+        }
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        els.forEach((e) => io.observe(e));
+      }
+
+      // Intro de marca: bloquea la landing mientras se ejecuta y la libera al terminar
+      const intro = document.getElementById('intro')!;
+      if (root.classList.contains('intro-on')) {
+        page.inert = true;
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          root.classList.remove('intro-on');
+          page.inert = false;
+          intro.remove();
+          startReveals();
+        };
+        intro.addEventListener('animationend', (e) => { if (e.animationName === 'intro-out') finish(); });
+        setTimeout(finish, 4000); // red de seguridad
+      } else {
+        intro.remove();
+        startReveals();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+---
+import { site } from '../data/site';
+---
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <p class="footer__brand">El Olivo <em>Tapería</em></p>
+      <p class="eyebrow eyebrow--light">Nerja · Málaga</p>
+    </div>
+    <nav aria-label="Pie de página" class="footer__links">
+      <a href="/carta">Carta</a>
+      <a href={site.mapsUrl}>Cómo llegar</a>
+      <a href="/#resenas">Reseñas</a>
+      <a href={site.instagramUrl}>Instagram</a>
+    </nav>
+    <address class="footer__addr">
+      {site.address.street}<br />{site.address.city}, {site.address.region}<br />
+      <a href={site.phoneHref}>{site.phone}</a>
+    </address>
+  </div>
+  <div class="wrap footer__legal">
+    <span>© 2026 {site.name}</span>
+    <span class="hand hand--light">Hecho con cariño en Nerja</span>
+  </div>
+</footer>

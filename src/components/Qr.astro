@@ -1,0 +1,8 @@
+---
+interface Props { class?: string; tone?: 'light' | 'dark' }
+const { class: cls = '', tone = 'light' } = Astro.props;
+---
+<div class:list={['qr', `qr--${tone}`, cls]} role="img" aria-label="QR PLACEHOLDER">
+  <i></i><i></i><i></i>
+  <span>[ QR PLACEHOLDER ]</span>
+</div>

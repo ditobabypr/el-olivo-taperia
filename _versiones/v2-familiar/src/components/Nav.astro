@@ -1,0 +1,42 @@
+---
+import { nav, site } from '../data/site';
+---
+<header class="nav" id="top">
+  <div class="wrap nav__bar">
+    <a class="nav__logo" href="/" aria-label={`${site.name} — inicio`}>
+      <span class="nav__logo-main">El Olivo</span>
+      <span class="nav__logo-sub">Tapería</span>
+    </a>
+    <nav class="nav__links" aria-label="Principal">
+      {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    <a class="btn btn--sm nav__cta" href="/carta">Ver carta</a>
+    <button class="nav__burger" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span>
+    </button>
+  </div>
+  <div class="menu" id="menu" hidden>
+    <nav aria-label="Menú móvil">
+      {nav.map((l, i) => <a href={l.href}><small>0{i + 1}</small>{l.label}</a>)}
+    </nav>
+    <div class="menu__foot">
+      <a class="btn" href="/carta">Ver carta</a>
+      <a class="menu__tel" href={site.phoneHref}>{site.phone}</a>
+    </div>
+  </div>
+</header>
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.nav__burger')!;
+  const menu = document.getElementById('menu')!;
+  const header = document.querySelector('.nav')!;
+  const set = (open: boolean) => {
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    menu.hidden = !open;
+    header.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => set(false)));
+  addEventListener('keydown', (e) => e.key === 'Escape' && set(false));
+</script>

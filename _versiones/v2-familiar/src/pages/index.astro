@@ -1,0 +1,195 @@
+---
+import Base from '../layouts/Base.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Qr from '../components/Qr.astro';
+import { site, award, pillars } from '../data/site';
+---
+<Base>
+  <!-- 01 HERO -->
+  <section class="hero" id="inicio">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow" data-reveal>Nerja · Málaga</p>
+        <h1 class="hero__title" data-reveal>
+          <span>El Olivo</span>
+          <em>Tapería</em>
+        </h1>
+        <p class="hero__sub" data-reveal>Tapas con carácter.<br />Sabores para compartir.</p>
+        <div class="hero__cta" data-reveal>
+          <a class="btn" href="/carta">Ver carta</a>
+          <a class="btn btn--ghost" href={site.mapsUrl}>Cómo llegar</a>
+        </div>
+        <p class="hero__meta" data-reveal>
+          {site.address.street} · Nerja
+          <span class="dot"></span>
+          <a href="#reconocimiento">Segundo premio · Ruta de la Tapa 2026</a>
+        </p>
+      </div>
+      <div class="hero__media" data-reveal>
+        <Placeholder label="[ HERO IMAGE ]" alt="IMAGE PLACEHOLDER — HERO" shape="arch" tone="olive" class="hero__ph" />
+        <span class="hero__tag">IMAGE PLACEHOLDER — HERO</span>
+        <p class="hand hand--hero" aria-hidden="true">¡Pasa, que hay mesa para ti!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 PRESENTACIÓN -->
+  <section class="section intro" id="el-olivo">
+    <div class="wrap intro__grid">
+      <div class="intro__copy">
+        <p class="eyebrow" data-reveal>El Olivo · Nerja</p>
+        <h2 class="display" data-reveal>Un rincón para comer, <em>compartir</em> y disfrutar.</h2>
+        <p class="lead" data-reveal>
+          Una tapería en Nerja donde la tradición mediterránea se encuentra con una cocina creativa y cercana, y donde te recibimos como a uno más de la familia.
+        </p>
+        <p class="note" data-reveal>Terraza y comedor interior.</p>
+        <p class="hand" data-reveal>Como en casa, pero en Nerja.</p>
+      </div>
+      <div class="intro__media">
+        <Placeholder label="IMAGE PLACEHOLDER — INTERIOR / TERRAZA" tone="clay" ratio="4 / 5" class="intro__a" />
+        <Placeholder label="IMAGE PLACEHOLDER — DETAIL" tone="stone" ratio="1 / 1" shape="round" class="intro__b" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 COCINA -->
+  <section class="section cocina">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light" data-reveal>La cocina</p>
+      <h2 class="display display--light" data-reveal>Nuestra manera de entender <em>la mesa.</em></h2>
+      <ol class="pillars">
+        {pillars.map((p, i) => (
+          <li data-reveal style={`--d:${i * 70}ms`}>
+            <span class="pillars__n">{['i', 'ii', 'iii', 'iv'][i]}.</span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 04 RECONOCIMIENTO -->
+  <section class="section award" id="reconocimiento">
+    <div class="wrap award__grid">
+      <div class="award__num" aria-hidden="true" data-reveal>{award.number}</div>
+      <div class="award__copy">
+        <p class="eyebrow" data-reveal>{award.place} · {award.event}</p>
+        <h2 class="display" data-reveal>{award.kicker}</h2>
+        <p class="award__dish" data-reveal>
+          {award.dish.map((l) => <span>{l}</span>)}
+        </p>
+        <p class="lead" data-reveal>{award.text}</p>
+        <p class="hand" data-reveal>¡Gracias a todos los que nos votasteis!</p>
+        <p class="note" data-reveal>Reconocimiento confirmado por el Ayuntamiento de Nerja.</p>
+      </div>
+      <Placeholder label="IMAGE PLACEHOLDER — AWARD" alt="Rollito de merluza relleno de langostino en salsa de puerros" tone="clay" ratio="4 / 5" class="award__ph" />
+    </div>
+  </section>
+
+  <!-- 05 CARTA + QR -->
+  <section class="section carta-in" id="carta">
+    <div class="wrap carta-in__grid">
+      <div>
+        <p class="eyebrow eyebrow--light" data-reveal>Sin PDF, sin esperas</p>
+        <h2 class="display display--xl display--light" data-reveal>La carta</h2>
+        <p class="lead lead--light" data-reveal>Descubre nuestra propuesta gastronómica.</p>
+        <a class="btn btn--cream" href="/carta" data-reveal>Ver carta</a>
+        <p class="hand hand--light" data-reveal>Mira con calma, sin prisa.</p>
+      </div>
+      <div class="qrbox" data-reveal>
+        <Qr tone="light" />
+        <div>
+          <h3>Tu mesa. Tu carta.</h3>
+          <p>Escanea y descubre nuestra carta desde tu móvil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 RESEÑAS -->
+  <section class="section reviews" id="resenas">
+    <div class="wrap">
+      <div class="reviews__head">
+        <h2 class="display" data-reveal>Lo dicen quienes ya han pasado por <em>El Olivo.</em></h2>
+        <div class="score" data-reveal>
+          <strong>{site.rating.value} <span>★</span></strong>
+          <span>{site.rating.count} reseñas en Google</span>
+        </div>
+      </div>
+      <div class="quotes">
+        {[0, 1, 2].map((i) => (
+          <blockquote data-reveal style={`--d:${i * 80}ms`}>
+            <p>“[ Reseña de cliente ]”</p>
+            <footer>— Nombre · Google</footer>
+          </blockquote>
+        ))}
+      </div>
+      <a class="btn btn--ghost" href={site.reviewsUrl}>Ver reseñas</a>
+      <p class="hand" data-reveal>Gracias, de corazón.</p>
+
+      <!-- 07 TARJETA -->
+      <div class="rcard">
+        <div class="rcard__copy" data-reveal>
+          <p class="eyebrow">Después de la sobremesa</p>
+          <h3 class="display display--sm">Si disfrutaste de la experiencia, <em>cuéntaselo a otros.</em></h3>
+        </div>
+        <div class="rcard__mock" data-reveal>
+          <div class="rcard__card">
+            <span class="rcard__label">[ TARJETA DE RESEÑAS — MOCKUP PLACEHOLDER ]</span>
+            <p class="rcard__brand">El Olivo</p>
+            <Qr tone="dark" class="qr--sm" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 GALERÍA -->
+  <section class="section gallery">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Momentos</p>
+      <h2 class="display" data-reveal>Mesa, luz y <em>buena compañía.</em></h2>
+      <div class="gallery__grid">
+        <Placeholder label="[ FOOD IMAGE ]" tone="olive" class="g g1" data-reveal />
+        <Placeholder label="[ INTERIOR IMAGE ]" tone="stone" class="g g2" />
+        <Placeholder label="[ TERRACE IMAGE ]" tone="clay" class="g g3" />
+        <Placeholder label="[ DETAIL IMAGE ]" tone="sand" shape="round" class="g g4" />
+        <Placeholder label="[ FOOD IMAGE ]" tone="ink" class="g g5" />
+        <Placeholder label="[ PEOPLE / EXPERIENCE IMAGE ]" tone="olive" class="g g6" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 UBICACIÓN + HORARIOS -->
+  <section class="section visit" id="ven-a-vernos">
+    <div class="wrap visit__grid">
+      <div class="visit__info">
+        <p class="eyebrow eyebrow--light" data-reveal>Nerja · Málaga</p>
+        <h2 class="display display--light" data-reveal>Ven a <em>vernos.</em></h2>
+        <address class="visit__addr" data-reveal>
+          C. Fray Junípero Serra<br />29780 Nerja, Málaga
+        </address>
+        <p data-reveal><a class="visit__tel" href={site.phoneHref}>{site.phone}</a></p>
+        <div class="hero__cta" data-reveal>
+          <a class="btn btn--cream" href={site.mapsUrl}>Cómo llegar</a>
+          <a class="btn btn--ghost-light" href={site.phoneHref}>Llamar</a>
+        </div>
+
+        <div class="hours" data-reveal>
+          <p class="hand hand--light hand--visit">Te esperamos con la mesa puesta.</p>
+          <p class="hours__flag">Horario provisional · pendiente de confirmar</p>
+          <div class="hours__row">
+            <h3>{site.hours.open.days}</h3>
+            <p>{site.hours.open.slots[0]}<br />{site.hours.open.slots[1]}</p>
+          </div>
+          <div class="hours__row hours__row--closed">
+            <h3>{site.hours.closed.days}</h3>
+            <p>{site.hours.closed.label}</p>
+          </div>
+        </div>
+      </div>
+      <Placeholder label="MAP PLACEHOLDER" alt="Mapa de ubicación de El Olivo Tapería en Nerja" tone="stone" class="visit__map" />
+    </div>
+  </section>
+</Base>
