@@ -1,0 +1,115 @@
+---
+/**
+ * Carta digital: /carta/es · /carta/en · /carta/de
+ * Todo el contenido viene de src/data/menu.ts (platos, precios, categorías) y src/data/ui.ts (textos de interfaz).
+ */
+import Base from '../../layouts/Base.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Leaf from '../../components/carta/Leaf.astro';
+import Dish from '../../components/carta/Dish.astro';
+import SelectionUI from '../../components/carta/SelectionUI.astro';
+import { LANGS, type Lang } from '../../data/menu';
+import { ui } from '../../data/ui';
+import { buildSections } from '../../lib/menu';
+import '../../styles/carta.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const u = ui[lang];
+const sections = buildSections(lang);
+const tones = ['olive', 'clay', 'stone', 'sand', 'olive', 'clay'] as const;
+
+// Datos estructurados (schema.org/Menu) generados desde los mismos datos
+const menuLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  name: u.pageTitle,
+  inLanguage: lang,
+  hasMenuSection: sections.map((s) => ({
+    '@type': 'MenuSection',
+    name: s.title,
+    hasMenuSection: s.groups.map((g) => ({
+      '@type': 'MenuSection',
+      name: g.title ?? s.title,
+      hasMenuItem: g.dishes.map((d) => {
+        const t = d.translations[lang];
+        const offers =
+          d.pricing.type === 'single' ? { '@type': 'Offer', price: d.pricing.price.toFixed(2), priceCurrency: 'EUR' }
+          : d.pricing.type === 'sizes' ? [
+              { '@type': 'Offer', name: u.half, price: d.pricing.half.toFixed(2), priceCurrency: 'EUR' },
+              { '@type': 'Offer', name: u.full, price: d.pricing.full.toFixed(2), priceCurrency: 'EUR' },
+            ] : undefined;
+        return { '@type': 'MenuItem', name: t.name, ...(t.description ? { description: t.description } : {}), ...(offers ? { offers } : {}) };
+      }),
+    })),
+  })),
+};
+---
+<Base title={u.pageTitle} description={u.pageDescription} lang={lang} splash={false} chrome={false} skipLabel={u.skip}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(menuLd)} />
+
+  <div class="cm-app">
+    <header class="cm-top">
+      <div class="cm-top__bar">
+        <a class="cm-brand" href="/" aria-label={u.backToSite}>
+          <span class="cm-brand__main">El Olivo</span><span class="cm-brand__sub">Tapería</span>
+        </a>
+        <a class="cm-lang" href="/carta#idioma">
+          <span class="cm-lang__code" aria-hidden="true">{lang.toUpperCase()}</span>
+          <span>{u.changeLanguage}</span>
+        </a>
+      </div>
+      <nav class="cm-nav" aria-label={u.navLabel}>
+        <ul class="cm-nav__scroll">
+          {sections.map((s) => <li><a href={`#${s.id}`}>{s.short}</a></li>)}
+        </ul>
+      </nav>
+    </header>
+
+    <section class="cm-cover wood">
+      <div class="engrave">
+        <img src="/brand/olivo-grabado.png" alt="" width="687" height="700" />
+        <div aria-hidden="true"><span class="engrave__name">EL OLIVO</span><span class="engrave__sub">Tapería - bar</span></div>
+      </div>
+      <h1 class="cm-cover__title">{u.menuTitle}</h1>
+    </section>
+
+    {sections.map((s, i) => (
+      <section class="cm-sec" id={s.id} aria-labelledby={`${s.id}-t`}>
+        <header class="cm-sec__head" data-reveal>
+          <span class="cm-sec__n" aria-hidden="true">{String(s.number).padStart(2, '0')}</span>
+          <h2 class="cm-sec__title" id={`${s.id}-t`}>{s.title}</h2>
+          <Leaf class="cm-sec__leaf" />
+        </header>
+
+        {s.image?.src
+          ? <img class="cm-sec__img" src={s.image.src} alt={s.image.alt ?? s.title} loading="lazy" decoding="async" />
+          : <Placeholder class="cm-sec__img" label={`IMAGE PLACEHOLDER — ${s.title.toUpperCase()}`} alt="" tone={tones[i % tones.length]} ratio="16 / 7" />}
+
+        {s.groups.map((g) => (
+          <div class="cm-group">
+            {g.title && <h3 class="cm-sub"><span>{g.title}</span></h3>}
+            <ul class="cm-list">
+              {g.dishes.map((d) => <Dish dish={d} lang={lang} ui={u} nested={!!g.title} />)}
+            </ul>
+          </div>
+        ))}
+      </section>
+    ))}
+
+    <footer class="cm-foot">
+      <Leaf class="cm-foot__leaf" />
+      <p class="cm-foot__brand">El Olivo <em>Tapería</em> · Nerja</p>
+      <p class="cm-foot__note">{u.footerNote}</p>
+      <a class="cm-link" href="/">{u.backToSite}</a>
+    </footer>
+  </div>
+
+  <SelectionUI ui={u} />
+
+  <script>
+    import '../../scripts/menu-nav';
+  </script>
+</Base>

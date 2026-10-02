@@ -1,0 +1,63 @@
+/* ───────── Tema "madera grabada" · inspirado en la portada física de la carta ─────────
+   Para desactivarlo: quitar el import de este archivo en layouts/Base.astro. */
+:root {
+  --wood: #c98c52;
+  --wood-deep: #8a4f22;
+  --engrave: #3e2410;
+}
+
+.wood {
+  background: var(--wood) url('/brand/madera.svg') center / cover;
+  color: var(--engrave);
+}
+/* texto "grabado": marrón oscuro con un borde de luz abajo */
+.wood h1, .wood h2, .wood h3, .wood .engrave-text {
+  color: var(--engrave);
+  text-shadow: 0 1px 0 rgba(255, 228, 185, .45), 0 -1px 0 rgba(0, 0, 0, .12);
+}
+.wood .eyebrow, .wood .lead, .wood p { color: var(--engrave); }
+.wood .eyebrow::before { background: var(--engrave); }
+.wood .display em { color: #6d3a14; }
+
+/* botones sobre madera */
+.wood .btn { background: var(--engrave); border-color: var(--engrave); color: #f7eddb; }
+.wood .btn:hover { background: #5a3418; border-color: #5a3418; }
+
+/* ── logo grabado (árbol + nombre) ── */
+.engrave { display: flex; align-items: center; justify-content: center; gap: .6em; font-size: min(26px, 4.6vw); margin-bottom: 2.5rem; }
+.engrave img { width: 6.4em; height: auto; flex: none; opacity: .92; filter: drop-shadow(0 1px 0 rgba(255, 228, 185, .4)); }
+.engrave__name { display: block; font: 600 2.1em/1 var(--serif); font-variation-settings: 'opsz' 144; letter-spacing: .03em; color: var(--engrave); text-shadow: 0 1px 0 rgba(255, 228, 185, .45); white-space: nowrap; }
+.engrave__sub { display: block; margin: .1em 0 0 .9em; font: 400 1.7em/1.2 'Mrs Saint Delafield', 'Caveat', cursive; color: var(--engrave); white-space: nowrap; -webkit-text-stroke: .35px var(--engrave); }
+
+/* ── landing: entrada a la carta como tabla de madera ── */
+.carta-in.wood { background: var(--wood) url('/brand/madera.svg') center / cover; }
+.carta-in.wood .eyebrow--light, .carta-in.wood .lead--light, .carta-in.wood .qrbox p { color: var(--engrave); }
+.carta-in.wood .display--light, .carta-in.wood .display--light em, .carta-in.wood .qrbox h3 { color: var(--engrave); }
+.carta-in.wood .btn--cream { background: var(--engrave); border-color: var(--engrave); color: #f7eddb; }
+.carta-in.wood .btn--cream:hover { background: #5a3418; border-color: #5a3418; }
+.carta-in.wood .qrbox { border-color: rgba(62, 36, 16, .35); }
+
+/* ── landing: un único olivo transparente que cruza hero + presentación ──
+   La copa queda en la parte baja del hero; el tronco baja por detrás de la presentación,
+   cruza el borde y la base con sus raíces queda DENTRO de la sección verde ("La cocina").
+   Imagen: olivo-raices.png (883×1370) = árbol original con el tronco prolongado (900+110 px)
+   + raíces (360 px). La copa no se toca; la franja de tronco alargada cae sobre el borde.
+   ── Ajustes rápidos ──
+   --tree-h        tamaño del árbol (la copa no se mueve si solo cambias esto en proporción)
+   left            posición horizontal (móvil: más abajo)
+   opacity         intensidad (0.07)
+   --root-fade-*   dónde empiezan a desvanecerse las raíces dentro de la sección verde
+   z-index         ::before = 0 (detrás del contenido) · .cocina .wrap = 2 (texto por encima)
+   Para más/menos tronco o raíces hay que regenerar la imagen (DELTA y R del script). */
+.tree-zone { position: relative; overflow-x: clip; overflow-y: visible; --tree-h: min(74%, 250vw);
+  --root-fade-from: 74%; --root-fade-to: 100%; }
+.tree-zone::before { content: ''; position: absolute; z-index: 0; pointer-events: none; opacity: .07;
+  bottom: 0; left: -24vw; height: calc(var(--tree-h) * 1.5222); aspect-ratio: 883 / 1370;
+  transform: translateY(34.31%); /* 470/1370: la fila 900 de la imagen coincide con el borde de la sección verde */
+  background: url('/brand/olivo-raices.png') no-repeat center / 100% 100%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--root-fade-from), transparent var(--root-fade-to));
+          mask-image: linear-gradient(to bottom, #000 var(--root-fade-from), transparent var(--root-fade-to)); }
+.tree-zone > * { position: relative; z-index: 1; }
+.cocina .wrap { position: relative; z-index: 2; } /* el texto queda por encima de las raíces */
+@media (max-width: 55.99rem) { .tree-zone::before { left: -70vw; } }
+@media (min-width: 40rem) and (max-width: 55.99rem) { .tree-zone::before { left: -45vw; } } /* tablet: algo menos recortado */

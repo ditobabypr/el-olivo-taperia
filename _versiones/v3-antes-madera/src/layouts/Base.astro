@@ -1,22 +1,13 @@
 ---
 import '../styles/global.css';
-import '../styles/madera.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Intro from '../components/Intro.astro';
 import { intro } from '../config/intro';
 import { site } from '../data/site';
 
-interface Props {
-  title?: string;
-  description?: string;
-  lang?: string;        // idioma del documento (es / en / de)
-  splash?: boolean;     // false = sin la intro de marca superpuesta (la carta tiene su propia bienvenida)
-  chrome?: boolean;     // false = sin la navegación ni el pie de la landing (la carta trae los suyos)
-  skipLabel?: string;
-}
-const { title = site.title, description = site.description, lang = 'es', splash = true, chrome = true, skipLabel = 'Saltar al contenido' } = Astro.props;
-const ogLocale: Record<string, string> = { es: 'es_ES', en: 'en_GB', de: 'de_DE' };
+interface Props { title?: string; description?: string; }
+const { title = site.title, description = site.description } = Astro.props;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -45,7 +36,7 @@ const jsonLd = {
 };
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -55,7 +46,7 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="restaurant" />
-    <meta property="og:locale" content={ogLocale[lang] ?? 'es_ES'} />
+    <meta property="og:locale" content="es_ES" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
@@ -65,13 +56,13 @@ const jsonLd = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Mrs+Saint+Delafield&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="preload" as="image" href="/brand/olivo-arbol.png" />
-    <script is:inline define:vars={{ mode: intro.mode, key: intro.storageKey, exclude: intro.excludePaths, enabled: splash }}>
+    <script is:inline define:vars={{ mode: intro.mode, key: intro.storageKey, exclude: intro.excludePaths }}>
       var d = document.documentElement; d.classList.add('js');
       // ¿Mostrar la intro? Se decide antes del primer pintado para evitar parpadeos.
       (function () {
         try {
           var path = location.pathname.replace(/\/$/, '') || '/';
-          if (!enabled || mode === 'never' || exclude.indexOf(path) > -1) return;
+          if (mode === 'never' || exclude.indexOf(path) > -1) return;
           if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
           if (mode !== 'always') {
             var st = mode === 'once' ? localStorage : sessionStorage;
@@ -83,15 +74,14 @@ const jsonLd = {
       })();
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <slot name="head" />
   </head>
   <body>
-    <a class="skip" href="#main">{skipLabel}</a>
-    {splash && <Intro />}
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <Intro />
     <div id="page">
-      {chrome && <Nav />}
+      <Nav />
       <main id="main"><slot /></main>
-      {chrome && <Footer />}
+      <Footer />
     </div>
     <script>
       const root = document.documentElement;
@@ -111,8 +101,8 @@ const jsonLd = {
       }
 
       // Intro de marca: bloquea la landing mientras se ejecuta y la libera al terminar
-      const intro = document.getElementById('intro');
-      if (intro && root.classList.contains('intro-on')) {
+      const intro = document.getElementById('intro')!;
+      if (root.classList.contains('intro-on')) {
         page.inert = true;
         let done = false;
         const finish = () => {
@@ -126,7 +116,7 @@ const jsonLd = {
         intro.addEventListener('animationend', (e) => { if (e.animationName === 'intro-out') finish(); });
         setTimeout(finish, 4000); // red de seguridad
       } else {
-        intro?.remove();
+        intro.remove();
         startReveals();
       }
     </script>

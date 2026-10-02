@@ -1,0 +1,8 @@
+---
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<svg class:list={['leaf', cls]} viewBox="0 0 24 40" aria-hidden="true" focusable="false">
+  <path d="M12 1C4.5 9 3.5 24 12 39 20.5 24 19.5 9 12 1Z" fill="currentColor" />
+  <path d="M12 8v26" stroke="var(--cream, #f4eedf)" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".55" />
+</svg>

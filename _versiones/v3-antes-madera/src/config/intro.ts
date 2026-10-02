@@ -29,11 +29,3 @@ export const intro = {
   shiftScale: 1,        // 1 = el árbol arranca exactamente centrado en pantalla; 0.4 = desplazamiento corto
   textSlide: '-1.5em',  // cuánto "viene de atrás" el texto antes de asentarse
 };
-
-/** Variables CSS con los tiempos/curvas de arriba. Las usan Intro.astro y la bienvenida de /carta. */
-export const introCssVars = [
-  `--t-tree:${intro.treeIn}ms`, `--t-move-d:${intro.moveDelay}ms`, `--t-move:${intro.moveDuration}ms`,
-  `--t-text-d:${intro.textDelay}ms`, `--t-text:${intro.textDuration}ms`, `--t-hold:${intro.holdUntil}ms`,
-  `--t-out:${intro.fadeOut}ms`, `--ease-intro:${intro.easing}`, `--shift-scale:${intro.shiftScale}`,
-  `--text-slide:${intro.textSlide}`,
-].join(';');

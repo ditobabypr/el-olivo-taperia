@@ -1,0 +1,67 @@
+---
+/**
+ * "Mi selección": barra inferior, panel (bottom sheet) y aviso explicativo.
+ * No es un pedido: no hay backend ni almacenamiento. La lista vive solo en memoria
+ * (ver src/scripts/selection.ts) y desaparece al recargar o salir.
+ */
+import type { Ui } from '../../data/ui';
+interface Props { ui: Ui }
+const { ui } = Astro.props;
+---
+<button type="button" class="cm-bar" id="cm-bar" aria-haspopup="dialog" aria-controls="cm-sheet" data-n="0">
+  <svg class="cm-bar__icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M6 3.5h9l3 3V20.5H6z" /><path d="M9 11h6M9 14.5h6M9 18h3.5" />
+  </svg>
+  <span class="cm-bar__text">
+    <span class="cm-bar__title">{ui.mySelection}</span>
+    <span class="cm-bar__count" hidden></span>
+  </span>
+  <span class="cm-bar__total" hidden></span>
+</button>
+
+<dialog class="cm-sheet" id="cm-sheet" aria-labelledby="cm-sheet-title">
+  <div class="cm-sheet__panel">
+    <div class="cm-sheet__handle" aria-hidden="true"></div>
+    <header class="cm-sheet__head">
+      <h2 id="cm-sheet-title">{ui.mySelection}</h2>
+      <button type="button" class="cm-x" data-close aria-label={ui.close}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </header>
+    <div class="cm-sheet__body">
+      <p class="cm-empty" id="cm-empty">{ui.empty}</p>
+      <ul class="cm-rows" id="cm-rows"></ul>
+    </div>
+    <footer class="cm-sheet__foot">
+      <div class="cm-total">
+        <span class="cm-total__label" id="cm-total-label">{ui.total}</span>
+        <strong class="cm-total__value" id="cm-total-value">0,00&nbsp;€</strong>
+      </div>
+      <p class="cm-total__consult" id="cm-total-consult" hidden></p>
+      <p class="cm-note">{ui.notAnOrder}</p>
+      <button type="button" class="cm-btn" data-close>{ui.keepBrowsing}</button>
+      <div class="cm-sheet__links">
+        <button type="button" class="cm-link" id="cm-help-open">{ui.howItWorks}</button>
+        <button type="button" class="cm-link" id="cm-clear">{ui.clear}</button>
+      </div>
+    </footer>
+  </div>
+</dialog>
+
+<dialog class="cm-help" id="cm-help" aria-labelledby="cm-help-title">
+  <div class="cm-help__panel">
+    <svg class="cm-help__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h9l3 3V20.5H6z" /><path d="M9 11h6M9 14.5h6M9 18h3.5" /></svg>
+    <h2 id="cm-help-title">{ui.helpTitle}</h2>
+    <p>{ui.helpAsk}</p>
+    <p>{ui.helpBody}</p>
+    <p class="cm-help__not"><strong>{ui.helpNot}</strong><br />{ui.helpEnd}</p>
+    <button type="button" class="cm-btn" id="cm-help-ok">{ui.helpOk}</button>
+  </div>
+</dialog>
+
+<p class="cm-sr" id="cm-live" role="status" aria-live="polite"></p>
+<script type="application/json" id="cm-ui" set:html={JSON.stringify(ui)} />
+
+<script>
+  import '../../scripts/selection';
+</script>

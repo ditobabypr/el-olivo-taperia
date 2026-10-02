@@ -1,0 +1,32 @@
+---
+/**
+ * /carta — bienvenida de la carta digital (destino del QR de mesa).
+ * Reutiliza la animación de marca de la landing (BrandMark + src/config/intro.ts); al terminar,
+ * el logo queda estático y debajo aparece la elección de idioma.
+ */
+import Base from '../../layouts/Base.astro';
+import BrandMark from '../../components/BrandMark.astro';
+import { introCssVars } from '../../config/intro';
+import { languages, welcomeTitle, ui } from '../../data/ui';
+import '../../styles/carta.css';
+---
+<Base title={ui.es.pageTitle} description={ui.es.pageDescription} lang="es" splash={false} chrome={false} skipLabel={ui.es.skip}>
+  <!-- Si se vuelve desde la carta para cambiar de idioma (#idioma) se omite la animación -->
+  <script slot="head" is:inline>if (location.hash === '#idioma') document.documentElement.classList.add('no-anim');</script>
+
+  <div class="welcome" style={introCssVars}>
+    <h1 class="cm-sr">El Olivo Tapería - bar · Nerja</h1>
+    <BrandMark />
+
+    <nav class="lang" id="idioma" aria-labelledby="lang-title">
+      <h2 class="lang__title" id="lang-title">{welcomeTitle}</h2>
+      <ul class="lang__list">
+        {languages.map((l) => (
+          <li>
+            <a class="lang__link" href={`/carta/${l.code}`} hreflang={l.code} lang={l.code}>{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</Base>

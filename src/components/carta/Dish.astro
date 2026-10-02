@@ -1,0 +1,55 @@
+---
+/**
+ * Un plato. No contiene ningún texto ni precio propio: todo llega desde src/data/menu.ts.
+ */
+import type { Dish, Lang } from '../../data/menu';
+import type { Ui } from '../../data/ui';
+import { formatPrice } from '../../lib/format';
+
+interface Props { dish: Dish; lang: Lang; ui: Ui; nested?: boolean }
+const { dish, lang, ui, nested = false } = Astro.props;
+
+const t = dish.translations[lang];
+const selectable = dish.selectable !== false;
+const Tag = nested ? 'h4' : 'h3';
+
+interface Row { key: string; label?: string; price: number | null; text: string }
+const rows: Row[] = [];
+if (dish.pricing.type === 'single') {
+  rows.push({ key: dish.id, price: dish.pricing.price, text: formatPrice(dish.pricing.price) });
+} else if (dish.pricing.type === 'sizes') {
+  rows.push({ key: `${dish.id}:half`, label: ui.half, price: dish.pricing.half, text: formatPrice(dish.pricing.half) });
+  rows.push({ key: `${dish.id}:full`, label: ui.full, price: dish.pricing.full, text: formatPrice(dish.pricing.full) });
+} else {
+  rows.push({ key: dish.id, price: null, text: ui.consult });
+}
+---
+<li class="cm-dish" data-dish={dish.id}>
+  {dish.image?.src && (
+    <img class="cm-dish__img" src={dish.image.src} alt={dish.image.alt ?? t.name} loading="lazy" decoding="async" width="96" height="96" />
+  )}
+  <div class="cm-dish__main">
+    <Tag class="cm-dish__name">{t.name}</Tag>
+    {t.description && <p class="cm-dish__desc">{t.description}</p>}
+    {rows.map((r) => (
+      <div class="cm-buy">
+        {r.label && <span class="cm-buy__label">{r.label}</span>}
+        <span class="cm-buy__leader" aria-hidden="true"></span>
+        {r.price === null
+          ? <span class="cm-buy__price cm-buy__price--consult">{r.text}</span>
+          : <data class="cm-buy__price" value={r.price}>{r.text}</data>}
+        {selectable && (
+          <div class="cm-qty" data-key={r.key} data-name={t.name} data-label={r.label ?? ''} data-price={r.price ?? ''} data-n="0">
+            <button type="button" class="cm-qty__btn cm-qty__dec" data-act="dec" aria-label={`${ui.remove}: ${t.name}${r.label ? ` (${r.label})` : ''}`}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" /></svg>
+            </button>
+            <span class="cm-qty__n" aria-hidden="true">0</span>
+            <button type="button" class="cm-qty__btn cm-qty__inc" data-act="inc" aria-label={`${ui.add}: ${t.name}${r.label ? ` (${r.label})` : ''}`}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12" /></svg>
+            </button>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</li>

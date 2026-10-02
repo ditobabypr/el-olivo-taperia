@@ -1,0 +1,45 @@
+---
+/**
+ * Composición animada del logo (árbol que se desplaza + "EL OLIVO / Tapería - bar" revelándose
+ * desde detrás). La usan la intro de la landing (Intro.astro) y la bienvenida de /carta.
+ * Los tiempos salen de src/config/intro.ts a través de las variables CSS del contenedor (--t-*).
+ */
+---
+<div class="splash__group" aria-hidden="true">
+  <div class="splash__tree"><img src="/brand/olivo-arbol.png" alt="" width="559" height="526" decoding="async" /></div>
+  <div class="splash__text">
+    <span class="splash__name">EL OLIVO</span>
+    <span class="splash__sub">Tapería - bar</span>
+  </div>
+</div>
+
+<style is:global>
+  .splash__group {
+    display: flex; align-items: center; gap: .6em;
+    font-size: min(34px, 4.1vw); /* 1em = unidad de la composición; todo escala con ella */
+  }
+  .splash__tree {
+    position: relative; z-index: 2; flex: none; width: 7em; /* por encima del texto */
+    background: var(--cream); /* tapa el texto que queda detrás: solo asoma pasado el borde del árbol */
+    transform: translate3d(calc(5.8em * var(--shift-scale)), 0, 0);
+    animation: intro-move var(--t-move) var(--ease-intro) var(--t-move-d) forwards;
+    will-change: transform;
+  }
+  .splash__tree img { width: 100%; height: auto; opacity: 0; animation: intro-tree var(--t-tree) var(--ease-intro) forwards; }
+  .splash__text {
+    position: relative; z-index: 1; flex: none; width: 11em; display: flex; flex-direction: column; color: #3e4826;
+    opacity: 0; clip-path: inset(-15% 100% -15% 0); transform: translate3d(var(--text-slide), 0, 0);
+    animation: intro-text var(--t-text) var(--ease-intro) var(--t-text-d) forwards;
+    will-change: transform, opacity;
+  }
+  .splash__name { font: 600 2.35em/1 var(--serif); font-variation-settings: 'opsz' 144; letter-spacing: .03em; white-space: nowrap; }
+  .splash__sub { margin: .1em 0 0 .9em; font: 400 1.9em/1.2 'Mrs Saint Delafield', 'Caveat', cursive; white-space: nowrap; }
+
+  @keyframes intro-tree { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+  @keyframes intro-move { to { transform: translate3d(0, 0, 0); } }
+  @keyframes intro-text {
+    0% { opacity: 0; clip-path: inset(-15% 100% -15% 0); transform: translate3d(var(--text-slide), 0, 0); }
+    40% { opacity: 1; }
+    100% { opacity: 1; clip-path: inset(-15% -5% -15% 0); transform: translate3d(0, 0, 0); }
+  }
+</style>
