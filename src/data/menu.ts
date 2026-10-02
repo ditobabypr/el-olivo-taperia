@@ -59,7 +59,7 @@ export type Pricing =
   | { type: 'consult' };
 
 export interface Translation { name: string; description?: string }
-export interface MenuImage { src?: string; alt?: string }
+export interface MenuImage { src?: string; alt?: string; position?: string } // position = encuadre CSS, p. ej. '50% 60%' (x y)
 
 export interface Dish {
   id: string;
@@ -90,6 +90,7 @@ export interface Subcategory {
 
 export const categories: Category[] = [
   {
+    image: { src: '/fotos/carta/tapas-extras.webp', position: '50% 55%' },
     id: 'tapas-extras', order: 1,
     translations: {
       es: { title: 'Tapas extras', short: 'Tapas extras' },
@@ -98,6 +99,7 @@ export const categories: Category[] = [
     },
   },
   {
+    image: { src: '/fotos/carta/frescas.webp', position: '50% 50%' },
     id: 'frescas', order: 2,
     translations: {
       es: { title: 'Frescas y con carácter', short: 'Frescas' },
@@ -106,6 +108,7 @@ export const categories: Category[] = [
     },
   },
   {
+    image: { src: '/fotos/carta/entre-panes.webp', position: '50% 70%' },
     id: 'entre-panes', order: 3,
     translations: {
       es: { title: 'Entre panes y tentaciones', short: 'Entre panes' },
@@ -114,6 +117,7 @@ export const categories: Category[] = [
     },
   },
   {
+    image: { src: '/fotos/carta/solo-para-ti.webp', position: '50% 65%' },
     id: 'solo-para-ti', order: 4,
     translations: {
       es: { title: 'Solo para ti', short: 'Solo para ti' },
@@ -122,6 +126,7 @@ export const categories: Category[] = [
     },
   },
   {
+    image: { src: '/fotos/carta/aqui-se-comparte.webp', position: '50% 50%' },
     id: 'aqui-se-comparte', order: 5,
     translations: {
       es: { title: 'Aquí se comparte', short: 'Aquí se comparte' },
@@ -130,6 +135,7 @@ export const categories: Category[] = [
     },
   },
   {
+    image: { src: '/fotos/carta/dulce-pecado.webp', position: '50% 55%' },
     id: 'dulce-pecado', order: 6,
     translations: {
       es: { title: 'Dulce pecado', short: 'Dulce pecado' },

@@ -1,0 +1,2 @@
+Aquí están las fotos YA OPTIMIZADAS de la carta (generadas con "npm run fotos").
+No las edites a mano: deja las originales en fotos-originales/carta/.

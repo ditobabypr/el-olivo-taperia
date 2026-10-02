@@ -49,7 +49,7 @@
    --root-fade-*   dónde empiezan a desvanecerse las raíces dentro de la sección verde
    z-index         ::before = 0 (detrás del contenido) · .cocina .wrap = 2 (texto por encima)
    Para más/menos tronco o raíces hay que regenerar la imagen (DELTA y R del script). */
-.tree-zone { position: relative; overflow-x: clip; overflow-y: visible; --tree-h: min(74%, 250vw);
+.tree-zone { position: relative; overflow-x: clip; overflow-y: visible; --tree-h: min(90%, 250vw);
   --root-fade-from: 74%; --root-fade-to: 100%; }
 .tree-zone::before { content: ''; position: absolute; z-index: 0; pointer-events: none; opacity: .07;
   bottom: 0; left: -24vw; height: calc(var(--tree-h) * 1.5222); aspect-ratio: 883 / 1370;

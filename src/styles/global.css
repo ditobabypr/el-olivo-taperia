@@ -153,10 +153,11 @@ address { font-style: normal; }
 .hero__ph { aspect-ratio: 3 / 4; }
 .hero__tag { position: absolute; left: 50%; bottom: -.7rem; transform: translateX(-50%); white-space: nowrap; background: var(--clay); color: var(--cream); padding: .4rem .9rem; border-radius: 999px; font: 500 .62rem var(--sans); letter-spacing: .18em; }
 @media (min-width: 56rem) {
-  .hero { padding-block: 4rem 6rem; }
-  .hero__grid { grid-template-columns: 1.15fr .85fr; align-items: end; gap: 4rem; }
-  .hero__media { order: 0; width: 100%; max-width: none; margin: 0; }
-  .hero__ph { aspect-ratio: 4 / 5.4; }
+  .hero { padding-block: 2rem; min-height: calc(100svh - 12rem); display: flex; align-items: center; }
+  .hero__grid { grid-template-columns: 1.15fr .85fr; align-items: center; gap: 4rem; }
+  .hero__title { font-size: clamp(4.6rem, min(11vw, 17svh), 10rem); }
+  .hero__media { order: 0; width: auto; max-width: none; margin: 0 auto; }
+  .hero__ph { aspect-ratio: 4 / 5; height: min(calc(100svh - 17rem), 36rem); width: auto; max-width: 100%; }
   .hero__cta .btn { flex: 0 0 auto; }
 }
 

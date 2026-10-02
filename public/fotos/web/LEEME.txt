@@ -1,0 +1,17 @@
+FOTOS DE LA WEB (landing "/")
+Ruta: public/fotos/web/
+Formato: .jpg (o .webp). Pon el nombre EXACTO de la lista; yo las conecto.
+
+hero.jpg          Portada (arco grande de arriba)
+interior.jpg      Presentación: foto grande vertical (interior o terraza)
+detalle.jpg       Presentación: foto pequeña redonda (detalle)
+premio.jpg        Rollito de merluza (premio Ruta de la Tapa)
+galeria-1.jpg     Galeria: comida
+galeria-2.jpg     Galeria: interior
+galeria-3.jpg     Galeria: terraza
+galeria-4.jpg     Galeria: detalle (redonda)
+galeria-5.jpg     Galeria: comida
+galeria-6.jpg     Galeria: gente / ambiente
+mapa.jpg          Mapa / fachada de la sección "Ven a vernos"
+
+Si quieres añadir más, ponles el nombre que quieras y dime dónde van.

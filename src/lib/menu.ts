@@ -6,7 +6,7 @@ export interface MenuSection {
   number: number;
   title: string;
   short: string;
-  image?: { src?: string; alt?: string };
+  image?: { src?: string; alt?: string; position?: string };
   groups: MenuGroup[];
 }
 

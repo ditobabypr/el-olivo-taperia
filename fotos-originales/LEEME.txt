@@ -1,0 +1,7 @@
+FOTOS ORIGINALES (no se publican)
+Deja aquí las fotos en bruto: fotos-originales/carta/ y fotos-originales/web/
+Después ejecuta:  npm run fotos
+Eso las convierte a WebP ligero en public/fotos/... (es lo que se ve en la web).
+Nombres de la carta (se renombran solos):
+  tapasextra -> tapas-extras · frescas · entrepanes -> entre-panes
+  soloparati -> solo-para-ti · compartir -> aqui-se-comparte · dulcepecado -> dulce-pecado

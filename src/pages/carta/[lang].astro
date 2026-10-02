@@ -5,6 +5,7 @@
  */
 import Base from '../../layouts/Base.astro';
 import Placeholder from '../../components/Placeholder.astro';
+import Frame from '../../components/carta/Frame.astro';
 import Leaf from '../../components/carta/Leaf.astro';
 import Dish from '../../components/carta/Dish.astro';
 import SelectionUI from '../../components/carta/SelectionUI.astro';
@@ -83,9 +84,11 @@ const menuLd = {
           <span class="cm-sec__bracket" aria-hidden="true"></span>
         </header>
 
-        {s.image?.src
-          ? <img class="cm-sec__img" src={s.image.src} alt={s.image.alt ?? s.title} loading="lazy" decoding="async" />
-          : <Placeholder class="cm-sec__img" label={`IMAGE PLACEHOLDER — ${s.title.toUpperCase()}`} alt="" tone={tones[i % tones.length]} ratio="16 / 7" />}
+        <Frame>
+          {s.image?.src
+            ? <img class="cm-sec__img" src={s.image.src} alt={s.image.alt ?? s.title} loading="lazy" decoding="async" style={s.image.position ? `object-position:${s.image.position}` : undefined} />
+            : <Placeholder class="cm-sec__img" label={`IMAGE PLACEHOLDER — ${s.title.toUpperCase()}`} alt="" tone={tones[i % tones.length]} ratio="4 / 3" />}
+        </Frame>
 
         {s.groups.map((g) => (
           <div class="cm-group">
