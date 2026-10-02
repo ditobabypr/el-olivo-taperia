@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Placeholder from '../components/Placeholder.astro';
+import OliveTreeGrowth from '../components/OliveTreeGrowth.astro';
 import Qr from '../components/Qr.astro';
 import { site, award, pillars } from '../data/site';
 ---
@@ -28,8 +29,7 @@ import { site, award, pillars } from '../data/site';
         </p>
       </div>
       <div class="hero__media" data-reveal>
-        <Placeholder label="[ HERO IMAGE ]" alt="IMAGE PLACEHOLDER — HERO" shape="arch" tone="olive" class="hero__ph" />
-        <span class="hero__tag">IMAGE PLACEHOLDER — HERO</span>
+        <OliveTreeGrowth class="hero__ph" />
       </div>
     </div>
   </section>
@@ -46,8 +46,7 @@ import { site, award, pillars } from '../data/site';
         <p class="note" data-reveal>Terraza y comedor interior.</p>
       </div>
       <div class="intro__media">
-        <Placeholder label="IMAGE PLACEHOLDER — INTERIOR / TERRAZA" tone="clay" ratio="4 / 5" class="intro__a" />
-        <Placeholder label="IMAGE PLACEHOLDER — DETAIL" tone="stone" ratio="1 / 1" shape="round" class="intro__b" />
+        <Placeholder label="IMAGE PLACEHOLDER — INTERIOR / TERRAZA" src="/fotos/web/fotointerior.webp" position="50% 60%" alt="Ambiente en el interior de El Olivo, con clientes brindando" tone="clay" ratio="4 / 5" class="intro__a" />
       </div>
     </div>
   </section>

@@ -6,12 +6,18 @@ interface Props {
   tone?: 'olive' | 'clay' | 'stone' | 'sand' | 'ink';
   shape?: 'rect' | 'arch' | 'round';
   ratio?: string;           // "4 / 5"
+  src?: string;             // foto real: sustituye al placeholder (ej. '/fotos/web/hero.webp')
+  position?: string;        // encuadre de la foto (object-position), ej. '40% 45%'
   class?: string;
   [key: string]: unknown;
 }
-const { label, alt, tone = 'olive', shape = 'rect', ratio, class: cls = '', ...rest } = Astro.props;
+const { label, alt, tone = 'olive', shape = 'rect', ratio, src, position, class: cls = '', ...rest } = Astro.props;
 ---
-<div class:list={['ph', `ph--${tone}`, `ph--${shape}`, cls]} style={ratio ? `aspect-ratio:${ratio}` : undefined}
-     role="img" aria-label={alt ?? label} {...rest}>
-  <span class="ph__label">{label}</span>
-</div>
+{src
+  ? <div class:list={['ph', 'ph--photo', `ph--${shape}`, cls]} style={ratio ? `aspect-ratio:${ratio}` : undefined} {...rest}>
+      <img src={src} alt={alt ?? ''} loading="lazy" decoding="async" style={position ? `object-position:${position}` : undefined} />
+    </div>
+  : <div class:list={['ph', `ph--${tone}`, `ph--${shape}`, cls]} style={ratio ? `aspect-ratio:${ratio}` : undefined}
+         role="img" aria-label={alt ?? label} {...rest}>
+      <span class="ph__label">{label}</span>
+    </div>}

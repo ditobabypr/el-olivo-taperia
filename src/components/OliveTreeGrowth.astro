@@ -1,0 +1,56 @@
+---
+/**
+ * Olivo que crece dentro del arco del hero. El vídeo (árbol oscuro sobre blanco) se funde con el fondo mate del arco
+ * mediante mix-blend-mode: multiply. Se reproduce una vez al entrar en pantalla (tras la intro) y queda en el último fotograma.
+ * Lógica de reproducción: src/scripts/olive-tree.ts · valores: src/config/arbol.ts
+ */
+import { arbol as a } from '../config/arbol';
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const vars = [
+  `--otg-bg:${a.background}`, `--otg-scale:${a.scale}cqw`, `--otg-left:${(50 - a.treeCenterX * a.scale).toFixed(2)}cqw`,
+  `--otg-top:${a.top}cqw`, `--otg-op:${a.opacity}`, `--otg-grain:${a.grain}`, `--otg-fade:${a.edgeFade}%`,
+  `--otg-boost:${a.whiteBoost}`, `--otg-phrase-in:${a.phrase.fadeIn}ms`,
+].join(';');
+---
+<div class:list={['otg', cls]} data-otg data-delay={a.startDelay} data-threshold={a.threshold} style={vars} role="img" aria-label={a.alt}>
+  <video class="otg__video" muted playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true">
+    <source src={a.video} type="video/mp4" />
+  </video>
+  <img class="otg__final" src={a.finalFrame} alt="" width="854" height="480" decoding="async" loading="lazy" aria-hidden="true" />
+  {a.phrase.show && <p class="otg__phrase">{a.phrase.text}</p>}
+</div>
+
+<style>
+  .otg { position: relative; overflow: hidden; isolation: isolate; container-type: inline-size; background-color: var(--otg-bg); border-radius: 999px 999px 0 0; }
+  /* grano mate muy sutil */
+  .otg::before { content: ''; position: absolute; inset: 0; background: var(--grain); opacity: var(--otg-grain); mix-blend-mode: multiply; pointer-events: none; z-index: 2; }
+  .otg__video, .otg__final {
+    position: absolute; left: var(--otg-left); top: var(--otg-top); width: var(--otg-scale); height: auto; aspect-ratio: 854 / 480;
+    max-width: none; object-fit: contain; pointer-events: none; opacity: var(--otg-op);
+    mix-blend-mode: multiply; filter: brightness(var(--otg-boost)) contrast(1.04);
+    -webkit-mask: linear-gradient(90deg, transparent, #000 var(--otg-fade) calc(100% - var(--otg-fade)), transparent), linear-gradient(180deg, transparent, #000 var(--otg-fade) calc(100% - var(--otg-fade)), transparent);
+    -webkit-mask-composite: source-in;
+            mask: linear-gradient(90deg, transparent, #000 var(--otg-fade) calc(100% - var(--otg-fade)), transparent), linear-gradient(180deg, transparent, #000 var(--otg-fade) calc(100% - var(--otg-fade)), transparent);
+            mask-composite: intersect;
+  }
+  .otg__final { visibility: hidden; }
+  .otg__phrase {
+    position: absolute; left: 0; right: 0; bottom: 6cqw; z-index: 3; margin: 0; text-align: center; padding-inline: 1rem;
+    font: italic 400 clamp(.95rem, 5.2cqw, 1.3rem)/1.3 var(--serif); letter-spacing: .01em; color: var(--olive);
+    opacity: 0; transition: opacity var(--otg-phrase-in) var(--ease);
+  }
+  .otg--done .otg__phrase { opacity: .85; }
+  /* sin vídeo (reducir movimiento, error o reproducción bloqueada): se muestra el último fotograma */
+  .otg--static .otg__video { display: none; }
+  .otg--static .otg__final { visibility: visible; }
+  @media (prefers-reduced-motion: reduce) {
+    .otg__video { display: none; }
+    .otg__final { visibility: visible; }
+    .otg__phrase { opacity: .85; transition: none; }
+  }
+</style>
+
+<script>
+  import '../scripts/olive-tree';
+</script>
