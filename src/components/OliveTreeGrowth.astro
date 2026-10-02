@@ -22,7 +22,9 @@ const vars = [
 </div>
 
 <style>
-  .otg { position: relative; overflow: hidden; isolation: isolate; container-type: inline-size; background-color: var(--otg-bg); border-radius: 999px 999px 0 0; }
+  .otg { position: relative; overflow: hidden; isolation: isolate; container-type: inline-size; background-color: var(--otg-bg); border-radius: 999px 999px 0 0;
+    /* clip-path recorta SIEMPRE los hijos con mix-blend-mode/filter/mask (overflow+radius falla en algunos móviles y deja las esquinas cuadradas) */
+    clip-path: inset(0 round 999px 999px 0 0); -webkit-clip-path: inset(0 round 999px 999px 0 0); }
   /* grano mate muy sutil */
   .otg::before { content: ''; position: absolute; inset: 0; background: var(--grain); opacity: var(--otg-grain); mix-blend-mode: multiply; pointer-events: none; z-index: 2; }
   .otg__video, .otg__final {
