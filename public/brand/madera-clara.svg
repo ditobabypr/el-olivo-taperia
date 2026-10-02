@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <!-- Madera clara, como el fondo de la carta física. Tono: base arena; vetas marrón suave. -->
+  <defs>
+    <filter id="vetas" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0007 0.022" numOctaves="4" seed="21" result="v"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.0012 0.0020" numOctaves="2" seed="5" result="c"/>
+      <feDisplacementMap in="v" in2="c" scale="150" xChannelSelector="R" yChannelSelector="G" result="v2"/>
+      <feColorMatrix in="v2" type="matrix" values="0 0 0 0 .47  0 0 0 0 .32  0 0 0 0 .17  .95 0 0 0 -.31"/>
+    </filter>
+    <radialGradient id="luz" cx="35%" cy="18%" r="95%">
+      <stop offset="0" stop-color="#ead6b6"/>
+      <stop offset="1" stop-color="#d9bf98"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#luz)"/>
+  <rect width="1600" height="1000" filter="url(#vetas)"/>
+</svg>

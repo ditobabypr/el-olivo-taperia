@@ -68,20 +68,19 @@ const menuLd = {
       </nav>
     </header>
 
-    <section class="cm-cover wood">
-      <div class="engrave">
-        <img src="/brand/olivo-grabado.png" alt="" width="687" height="700" />
-        <div aria-hidden="true"><span class="engrave__name">EL OLIVO</span><span class="engrave__sub">Tapería - bar</span></div>
+    <section class="cm-mast">
+      <div class="cm-mast__logo" aria-hidden="true">
+        <img src="/brand/olivo-arbol.png" alt="" width="559" height="526" />
+        <div><span class="cm-mast__name">EL OLIVO</span><span class="cm-mast__sub">Tapería - bar</span></div>
       </div>
-      <h1 class="cm-cover__title">{u.menuTitle}</h1>
+      <h1 class="cm-mast__title">{u.menuTitle}</h1>
     </section>
 
     {sections.map((s, i) => (
       <section class="cm-sec" id={s.id} aria-labelledby={`${s.id}-t`}>
-        <header class="cm-sec__head" data-reveal>
-          <span class="cm-sec__n" aria-hidden="true">{String(s.number).padStart(2, '0')}</span>
+        <header class="cm-sec__head">
           <h2 class="cm-sec__title" id={`${s.id}-t`}>{s.title}</h2>
-          <Leaf class="cm-sec__leaf" />
+          <span class="cm-sec__bracket" aria-hidden="true"></span>
         </header>
 
         {s.image?.src
@@ -105,6 +104,7 @@ const menuLd = {
       <p class="cm-foot__note">{u.footerNote}</p>
       <a class="cm-link" href="/">{u.backToSite}</a>
     </footer>
+    <span class="cm-corner" aria-hidden="true"></span>
   </div>
 
   <SelectionUI ui={u} />
